@@ -1,0 +1,9 @@
+/* S : 초기화 */
+html, body, * {
+    margin: 0;
+    padding: 0;
+}
+a {
+text-decoration : none !important;
+}
+/* E : 초기화 */
