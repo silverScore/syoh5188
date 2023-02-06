@@ -1,0 +1,57 @@
+/* initialization */
+html, body, * {
+    margin: 0;
+    padding: 0;
+}
+a {
+    text-decoration:none;
+}
+
+/* navbar.html */
+
+.navbar .logo {
+    width: 150px;
+}
+.navbar .logo img {
+    display: block;
+    width: 100%;
+}
+.navul li a {
+    color: #23aeff;
+    font-weight: bold;
+}
+@media (min-width: 992px){
+    .navul {
+        overflow: hidden;
+        clear: both;
+    }
+    .navul li {
+        float: left;
+        margin-right: 20px;
+    }
+    .navul li a {
+        display: block;
+        width: 100%;
+    }
+}
+
+/* searchbar.html */
+.searchBar {
+    padding: 20px;
+}
+.searchBar div h3{
+    font-size: 1em;
+    font-weight: bold;
+}
+.searchBar .filter .btnarea * {
+    line-height: 25px;
+    vertical-align: middle;
+}
+.searchBar .filter .btnarea .filterbtn{
+    width: 25px;
+
+}
+.filter .btnarea .filterbtn img {
+    display: block;
+    width: 100%;
+}

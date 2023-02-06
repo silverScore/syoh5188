@@ -1,25 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 # Create your views here.
-# from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
-from common.forms import UserForm
 
-
-def signup(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)  # 사용자 인증
-            login(request, user)  # 로그인
-            return redirect('index')
-    else:
-        form = UserForm()
-    return render(request, 'common/signup.html', {'form': form})
-
-
-# def index(request):
-#     return HttpResponse("안녕하세요 Common index에 오신것을 환영합니다.")
+def index(request):
+    # care_list = CareRank.objects.order_by('-ratingDate')
+    # context = {'care_list': care_list}
+    return render(request, 'common/main.html')

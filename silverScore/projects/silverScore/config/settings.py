@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w5j!q#01j0bjzhw%=i+5o(l-dnb2ctmwmsg&igo+%yl5d(d9nh'
+SECRET_KEY = 'django-insecure-5l+mh7q8=omy*0p0glp0-tgcow#@@8=ugv0kll)8#x6=5sgj&3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # add
     'care.apps.CareConfig',
-    'member.apps.MemberConfig',
     'common.apps.CommonConfig',
 ]
 
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,12 +119,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+import os
+
+# STATIC FILES
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / 'static',  # static 안에 일괄 파일 처리 시
+
 ]
+
+# STATIC_ROOT - 배포 시 runserver 를 통해서 자동으로 static files 모아주지 않음.
+STATIC_ROOT = os.path.join("staticfiles")  # "staticfiles"라는 이름으로 설정한 이유 : collectstatic 명령어를 사용하면 staticfiles폴더가 만들어지기 때문
+# python manage.py collectstatic # -> cmd 에서 배포 시에 적용 예정.
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 로그인 성공후 이동하는 URL
+LOGIN_REDIRECT_URL = '/'
+
+# 로그아웃시 이동하는 URL
+LOGOUT_REDIRECT_URL = '/'
