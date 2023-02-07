@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q  # search
 
 # Create your models here.
 # projects/silverScore/care/data/rankStatusData.csv
@@ -17,6 +18,9 @@ class CareRank(models.Model):
     processRating = models.IntegerField(blank=True, null=True)
     resultRating = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["-ratingDate"]
+
     # admin에서 보이기 위함
     def __str__(self):
         return f"기관명 : {self.longTermAdminNm} / 기관기호 : {self.longTermAdminCd}"
@@ -33,7 +37,24 @@ class AddressInfo(models.Model):
     siGunGuCd = models.IntegerField(blank=True, null=True)
     DongCd = models.IntegerField(blank=True, null=True)
     riCd = models.IntegerField(blank=True, null=True)
-    
-    # admin에서 보이기 위함
+
+    class Meta:
+        ordering = ["regionCd"]
+
+    # admin에서 보이기 위함 AddressInfo.object(idx) 에서
     def __str__(self):
-        return f"법정동코드 : {self.regionCd} / 지역명 : {self.regionNm}"
+        return f"id : {self.id} / 법정동코드 : {self.regionCd} / 지역명 : {self.regionNm}"
+
+    # def siDoArea(self):
+    #     return f'{self.regionCd} / {self.regionNm} / {self.siDoCd} / {self.siDoNm}' if self.siDoCd != 0 and self.siGunGuCd == 0 else ''
+    # # search siDo
+    # def siDoArea(self):
+    #     return f'{self.regionCd} / {self.siDoCd} / {self.regionNm} / {self.siDoNm}' if self.siDoCd != 0 and self.siGunGuCd == 0 else ''
+
+    # def siGunGuArea(self):
+    #     return f'{self.regionCd} / {self.siDoCd} / {self.siGunGuCd} / {self.siGunGuNm}' if self.siGunGuCd != 0 and self.DongCd == 0 else ''
+
+    # @siDoArea.setter
+    # def siDoArea(self):
+    #     if self.siGunGuNm == "":
+    #         return self  # f"지역코드 : {self.regionCd} / 지역명 : {self.siDoNm} / 시도코드 : {self.siDoCd}"

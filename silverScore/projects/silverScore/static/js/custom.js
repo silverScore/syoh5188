@@ -1,9 +1,9 @@
 window.onload = function(){
     console.log("document load!");
     // control checked
-    // mainTitle = document.querySelector("#mainTitle");
-    // mainTitle.innerText = "Main to mainTitle";
-    // mainTitle.style.setProperty("color","#0071c1");
+    mainTitle = document.querySelector("#mainTitle");
+    mainTitle.innerText = "Main to mainTitle";
+    mainTitle.style.setProperty("color","#0071c1");
 
     
 }
