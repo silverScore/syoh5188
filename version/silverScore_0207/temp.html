@@ -1,0 +1,16 @@
+
+{% include './searchbar.html' %}
+<div class="list_container">
+<!-- 요양원 목록 -->
+{% if care_list %}
+<ul class="care_list">
+{% for care in care_list %}
+<li><a href="{% url 'care:care_detail' care.id %}">{{ care.longTermAdminNm }} - {{ care.longTermAdminCd }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<div class="nonelist">
+<p>요양원이 존재하지 않습니다.</p>
+</div>
+{% endif %}
+</div>
