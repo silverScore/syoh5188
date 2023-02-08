@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- S: care_detail.html -->
+{% include "form_errors.html" %}
+<h1>{{ care.longTermAdminNm }}</h1>
+<div>
+    <p>
+        <span><strong>기관명 : </strong>{{ care.longTermAdminCd }}</span>
+    </p>
+    <p></p>
+</div>
+<!-- E: care_detail.html -->
+{% endblock %}
