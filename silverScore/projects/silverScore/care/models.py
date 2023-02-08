@@ -1,13 +1,16 @@
 from django.db import models
-from django.db.models import Q  # search
+from django.contrib.auth.models import User
 
 # Create your models here.
+
+# 요양원 - Care
 # projects/silverScore/care/data/rankStatusData.csv
-class CareRank(models.Model):
-    ratingCd = models.CharField(max_length=15)
+class Care(models.Model):
+    id = models.AutoField(primary_key=True)
     longTermAdminCd = models.CharField(max_length=15)
     longTermAdminNm = models.CharField(max_length=100)
     adminPttnName = models.CharField(max_length=20)
+    ratingCd = models.CharField(max_length=15)
     siDoName = models.CharField(max_length=20, blank=True, null=True)
     siGunGuName = models.CharField(max_length=20, blank=True, null=True)
     ratingDate = models.DateField(blank=True, null=True)
@@ -19,14 +22,20 @@ class CareRank(models.Model):
     resultRating = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        ordering = ["-ratingDate"]
+        ordering = ["ratingDate","ratingGrade"]
 
     # admin에서 보이기 위함
     def __str__(self):
-        return f"기관명 : {self.longTermAdminNm} / 기관기호 : {self.longTermAdminCd}"
+        return f"{self.id} / 기관명 : {self.longTermAdminNm} / 기관기호 : {self.longTermAdminCd}"
 
+
+# 리뷰 - Review
+
+
+# 주소 - Address
 # projects/silverScore/care/data/addressNumbers.csv
-class AddressInfo(models.Model):
+class Address(models.Model):
+    id = models.AutoField(primary_key=True)
     regionCd = models.IntegerField(blank=True, null=True)
     regionNm = models.CharField(max_length=200, blank=True, null=True)
     siDoNm = models.CharField(max_length=10, blank=True, null=True)
@@ -44,17 +53,3 @@ class AddressInfo(models.Model):
     # admin에서 보이기 위함 AddressInfo.object(idx) 에서
     def __str__(self):
         return f"id : {self.id} / 법정동코드 : {self.regionCd} / 지역명 : {self.regionNm}"
-
-    # def siDoArea(self):
-    #     return f'{self.regionCd} / {self.regionNm} / {self.siDoCd} / {self.siDoNm}' if self.siDoCd != 0 and self.siGunGuCd == 0 else ''
-    # # search siDo
-    # def siDoArea(self):
-    #     return f'{self.regionCd} / {self.siDoCd} / {self.regionNm} / {self.siDoNm}' if self.siDoCd != 0 and self.siGunGuCd == 0 else ''
-
-    # def siGunGuArea(self):
-    #     return f'{self.regionCd} / {self.siDoCd} / {self.siGunGuCd} / {self.siGunGuNm}' if self.siGunGuCd != 0 and self.DongCd == 0 else ''
-
-    # @siDoArea.setter
-    # def siDoArea(self):
-    #     if self.siGunGuNm == "":
-    #         return self  # f"지역코드 : {self.regionCd} / 지역명 : {self.siDoNm} / 시도코드 : {self.siDoCd}"

@@ -8,10 +8,23 @@
     </div>
     <div class="listarea">
         <!-- 요양원 목록 -->
+        <h3>전국 상위의 요양원 목록</h3>
         {% if care_list %}
-        <ul class="care_list">
-        {% for care in care_list %}
-            <li><a href="{% url 'care:care_detail' care.id %}">{{ care.longTermAdminNm }} - {{ care.longTermAdminCd }}</a></li>
+        <ul class="center_list">
+        {% for care in care_list|slice:":20" %} <!-- 상위 20개까지 -->
+            <li><a href="#">
+                <p class="centerName"><strong>{{ care.longTermAdminNm }}</strong></p>
+                <p class="area">
+                    <strong>지역 : </strong>
+                    <span>{{ care.siDoName }}</span>
+                </p>
+                <p class="grade">
+                    <strong>등급 : </strong><span class="result">{{ care.ratingGrade }}</span>
+                    <strong>평가 : </strong>
+                    <span>{{ care.ratingCd }}</span>
+                </p>
+                <p class="img"></p>
+            </a></li>
         {% endfor %}
         </ul>
         {% else %}

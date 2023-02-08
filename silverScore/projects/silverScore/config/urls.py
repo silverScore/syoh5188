@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import TemplateView
 from common import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('care/', include('care.urls')),
-    path('common/', include('common.urls')),
+    path('care/', include('care.urls')), # 요양원&리뷰
+    path('common/', include(('common.urls', 'common'))),
+    path('common/', include('django.contrib.auth.urls')),
     path('', views.index, name='index'),  # '/' 에 해당되는 path
 ]
-

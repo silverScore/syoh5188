@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5l+mh7q8=omy*0p0glp0-tgcow#@@8=ugv0kll)8#x6=5sgj&3'
+SECRET_KEY = 'django-insecure-j3u4-=agwzdcz5fd0h3uwo=p^$_v&x2__yu4m5pg-52m8os=ln'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,15 +31,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # add
+    'common',
+    'care',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # add
-    'care.apps.CareConfig',
-    'common.apps.CommonConfig',
+    
+    # 'care.apps.CareConfig',
+    # 'common.apps.CommonConfig',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'], # templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,18 +121,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+# STATIC_URL = 'static/'
 import os
 
 # STATIC FILES
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # static 안에 일괄 파일 처리 시
-
 ]
 
-# STATIC_ROOT - 배포 시 runserver 를 통해서 자동으로 static files 모아주지 않음.
-STATIC_ROOT = os.path.join("staticfiles")  # "staticfiles"라는 이름으로 설정한 이유 : collectstatic 명령어를 사용하면 staticfiles폴더가 만들어지기 때문
+# STATIC_ROOT - 추후 배포 시 runserver 를 통해서 자동으로 static files 모아주지 않음.
+# STATIC_ROOT = os.path.join("staticfiles")  # "staticfiles"라는 이름으로 설정한 이유 : collectstatic 명령어를 사용하면 staticfiles폴더가 만들어지기 때문
 # python manage.py collectstatic # -> cmd 에서 배포 시에 적용 예정.
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -142,3 +145,7 @@ LOGIN_REDIRECT_URL = '/'
 
 # 로그아웃시 이동하는 URL
 LOGOUT_REDIRECT_URL = '/'
+
+# AUTH_USER_MODEL
+AUTH_USER_MODEL = 'common.ExtendUserForm'
+# common/models.py -> ExtendedUserForm
