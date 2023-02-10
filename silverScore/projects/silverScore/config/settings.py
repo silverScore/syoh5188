@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j3u4-=agwzdcz5fd0h3uwo=p^$_v&x2__yu4m5pg-52m8os=ln'
+SECRET_KEY = 'django-insecure-j04++8c6pr-$37uhd#hc13247ik-snbv2$_h633th)+@&c=#tg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,15 +32,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # add
-    'common',
-    'care',
+    'common',  # custom UserForm model
+    'care',  # templatetags
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     # 'care.apps.CareConfig',
     # 'common.apps.CommonConfig',
 ]
@@ -69,6 +68,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'custom_tags': 'care.templatetags.care_template',  # care/templatetags/care_template.py
+            }
         },
     },
 ]
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'  # 'en-us'
 
-TIME_ZONE = 'Asia/Seoul'  # 'UTC'
+TIME_ZONE = 'Asia/Seoul' # 'UTC'
 
 USE_I18N = True
 
@@ -149,3 +151,4 @@ LOGOUT_REDIRECT_URL = '/'
 # AUTH_USER_MODEL
 AUTH_USER_MODEL = 'common.ExtendUserForm'
 # common/models.py -> ExtendedUserForm
+
