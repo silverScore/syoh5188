@@ -36,7 +36,7 @@
     <ul class="detailmenu">
         <li class="basic"><a href="#">기본 정보</a></li>
         <li class="rating"><a href="#">평가 정보</a></li>
-        <li class="map"><a href="#">지도 정보</a></li>
+        <li class="map disable"><a href="#">지도 정보</a></li>
         <li class="facility"><a href="#">시설현황</a></li>
         <li class="program disable"><a href="#">프로그램운영</a></li>
         <li class="photo disable"><a href="#">사진</a></li>
@@ -138,12 +138,13 @@
             </dl>
         </div>
         <div class="review">
-            <h3>{{ object.longTermAdminNm }} 의 후기/리뷰를 확인해보세요.</h3>
+            <h3>{{ object.longTermAdminNm }}의 후기/리뷰를 확인해보세요.</h3>
             {% load care_template %} <!-- care/templatetages/care_template.py -->
-            {% if user.is_authenticated %}
-            {% include './review_list.html' %}
-            {% endif %}
+            {% include './review_list.html' with reviews=reviews care=care %}
+            {% comment %} {% if user.is_authenticated %}
             {% include './review_form.html' %}
+            {% endif %} {% endcomment %}
+            
         </div>
     </div>
 </section>

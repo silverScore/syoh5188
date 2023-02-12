@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import BadRequest
 from django.core.exceptions import PermissionDenied
@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from .models import Care, Address, Review
 from .forms import ReviewForm
+from django.utils import timezone
 
 # Create your views here.
 
@@ -61,6 +62,11 @@ class CareDetailView(DetailView):
     template_name = 'care/care_detail.html'  # render할 path
     context_object_name = 'detail_info' # 해당의 view로 넘길 객체 이름
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['care'] = self.get_object()
+        return context
+    
     # def get_queryset(self):
     #     return super().get_queryset()
 
@@ -73,44 +79,49 @@ class CareDetailView(DetailView):
 class ReviewListView(ListView):
     model = Review
     template_name = 'care/review_list.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReviewListView, self).get_context_data(**kwargs)
+        context['review_list'] = Care.objects.all()
+        return context
     context_object_name = 'review_list'
     ordering = ['-created_at']
+    # review = get_object_or_404(Care, pk = self.kwargs['care_id']) # Review를 쓰기 위해 Care 인스턴스 존재 확인
+    
+    # return render(request, 'care/review_list.html', context)
 
 # review create
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
-    fields = ['amKind', 'faClean', 'content']
     template_name = 'care/review_form.html'
-    # success_url = reverse_lazy('care_list')
-
+    login_url = reverse_lazy('common:login')
+    
     def form_valid(self, form):
-        if form.instance.status != 1:
-            raise BadRequest("Invalid request received!")
-
-        review = get_object_or_404(Care, pk = self.kwargs['care_id']) # Review를 쓰기 위해 Care 인스턴스 존재 확인
-        # form.instance.care = Care.objects.get(id=self.kwargs['care_id'])
-        if review.is_deleted:
-            raise Http404
-
-        form.instance.care = review
+        care_id = self.kwargs.get('care_id')
+        care = get_object_or_404(Care, pk=care_id)
+        form.instance.care = care
         form.instance.author = self.request.user
-
+        review = form.save(commit=False)  # 임시저장하여 review 객체를 리턴받는다.
+        review.user = self.request.user
+        review.createDate = timezone.localtime()   # 실제 저장을 위해 작성일시를 설정한다.
+        review.longtermadmin = care
+        review.save()
         return super().form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request.session['next'] = self.request.get_full_path()
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('care_detail', kwargs={'pk': self.kwargs['care_id']})
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(ReviewCreateView, self).get_context_data(**kwargs)
         context['care'] = Care.objects.get(id=self.kwargs['care_id'])
 
         return context
 
-        # form.instance.care = Care.objects.get(id=self.kwargs['care_id'])
-        # form.instance.author = self.request.user
-
-        # return super().form_valid(form)
 
 # review_modify
 class ReviewUpdateView(LoginRequiredMixin, UpdateView):
@@ -120,9 +131,6 @@ class ReviewUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'care/review_form.html'
 
     def form_valid(self, form):
-        if form.instance.status != 1:
-            raise BadRequest("Invalid request received!")
-
         review = get_object_or_404(Care, pk = self.kwargs['care_id']) # Review를 쓰기 위해 Care 인스턴스 존재 확인
         if review.is_deleted:
             raise Http404

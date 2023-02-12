@@ -1,0 +1,22 @@
+<table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Care Name</th>
+        <th>Content</th>
+        <th>Kindness</th>
+        <th>Cleanliness</th>
+        <th>Create Date</th>
+        <th>Modify Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for review in review_list %}
+        <tr>
+            {{ review.amKind }}
+            {{ review.faClean }}
+            {{ review.content }}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
