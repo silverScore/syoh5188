@@ -105,7 +105,7 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         review = form.save(commit=False)  # 임시저장하여 review 객체를 리턴받는다.
         review.user = self.request.user
         review.createDate = timezone.localtime()   # 실제 저장을 위해 작성일시를 설정한다.
-        review.longtermadmin = care
+        review.care_id = care
         review.save()
         return super().form_valid(form)
 
